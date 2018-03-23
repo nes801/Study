@@ -1,10 +1,7 @@
 //描画エリアの生成
 var stage = new PIXI.Container();
-// var width = 1283;
-// var height = 916;
 //画像読み込む時はApplicationじゃなくてautoDetectRendererじゃないとダメみたい
 var app = new PIXI.autoDetectRenderer({ backgroundColor: 0xF9ECC7, antialias: false });
-// document.body.appendChild(app.view);
 var map;
 
 //ファイルをアップロード
@@ -19,32 +16,32 @@ PIXI.loader
   requestAnimationFrame(animate);
 
 
-//マウスオーバー
+//マウスクリック時処理
 stage.interactive=true;
-stage.mousemove=function(mouseData){
-  var x=app.plugins.interaction.mouse.global.x;
-  var y=app.plugins.interaction.mouse.global.y;
+stage.mousedown=function(mouseData){
+  var x =Math.floor(app.plugins.interaction.mouse.global.x/stage.scale.x);
+  var y=Math.floor(app.plugins.interaction.mouse.global.y/stage.scale.y);
+  createCircle(x,y,10);
+  console.log(x,y);
 
-  document.getElementById("winsize").innerHTML="x="+x+",y="+y;
+  document.getElementById("img_point").innerHTML="x="+x+",y="+y;
 }
 
-function setup(){
-  map=PIXI.Texture.fromImage("images/map.jpg");
-  // var map = PIXI.loader.resources["images/map.jpg"].texture;
-  // map.baseTexture.addListener("loaded",function(){
-  //   stage.resize(document.documentElement.clientWidth,document.documentElement.clientHeight);
-  // });
-  stage.addChild(new PIXI.Sprite(map));
-
-  //円を描く
+function createCircle(x,y,rad){
   var circle=new PIXI.Graphics();
   circle.beginFill(0x9966FF);
-  circle.drawCircle(1200,100,50);
+  circle.drawCircle(x,y,rad);
   circle.endFill();
+  // circle.interactive=true;
+  // circle.mousemove=function(mouseData){
+  //   console.log(x,y);
+  // }
   stage.addChild(circle);
-
+}
+function setup(){
+  map=PIXI.Texture.fromImage("images/map.jpg");
+  stage.addChild(new PIXI.Sprite(map));
   resize();
-  // app.render(stage);
 }
 
 function animate(){
@@ -57,13 +54,7 @@ function animate(){
 
 //画像のリサイズ
 function resize(){
-  console.log('hoge');
-  //スクロールバー内側の画面サイズ
-  // var W=document.body.clientWidth;
-  // var H=document.body.clientHeight;
   var W=document.body.clientWidth;
-  // var H=500;
-
 
   //画像のサイズを画面横幅サイズに縮小
   stage.scale.x = stage.scale.y = W/map.width;
