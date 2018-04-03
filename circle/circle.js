@@ -22,22 +22,33 @@ stage.mousedown=function(mouseData){
   var x =Math.floor(app.plugins.interaction.mouse.global.x/stage.scale.x);
   var y=Math.floor(app.plugins.interaction.mouse.global.y/stage.scale.y);
   createCircle(x,y,10);
-  console.log(x,y);
+  setCircleAction(circles);
 
   document.getElementById("img_point").innerHTML="x="+x+",y="+y;
 }
 
+var circles=[];
 function createCircle(x,y,rad){
   var circle=new PIXI.Graphics();
   circle.beginFill(0x9966FF);
   circle.drawCircle(x,y,rad);
   circle.endFill();
-  // circle.interactive=true;
-  // circle.mousemove=function(mouseData){
-  //   console.log(x,y);
-  // }
+
+  circle.interactive=true;
+  circle.buttonMode=true;
+
   stage.addChild(circle);
+
+  circles.push(circle);
+  console.log(x,y);
 }
+
+function setCircleAction(circles){
+  for (var i = 0; i < circles.length; i++) {
+    console.log(circles[i].position.x,circles[i].position.y);
+  }
+}
+
 function setup(){
   map=PIXI.Texture.fromImage("images/map.jpg");
   stage.addChild(new PIXI.Sprite(map));

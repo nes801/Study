@@ -27,7 +27,6 @@ function convertCSV(str){
       //カラムからキー名取得してオブジェクトに変換
       obj[column[j]]=line[j];
     }
-    console.log(obj.No);
 
       //objsの対応するNoへobjを格納
     objs[obj.No]=obj;
@@ -36,5 +35,3 @@ function convertCSV(str){
   console.log(objs);
 
 }
-
-//EOFが怪しい？
