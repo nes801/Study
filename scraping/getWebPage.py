@@ -64,12 +64,12 @@ def get_hotel_detail(hotel_id):
                         end_time=line_array[1]
                         stay_time=line_array[2]
                         min_price=line_array[3]
-                        max_price=line_array[4]
+                        max_price=line_array[4] if len(line_array) == 5 else line_array[3]
                         print (hotel_id+','+hotel_name+','+use_kbn+','+week_kbn+','+
                             min_price+','+max_price+','+start_time+','+end_time+','+stay_time)
                     # もしデータ抽出で失敗したら，例外キャッチする
                     except:
-                        print('エラー：'+hotel_id,line_array)
+                        print('エラー：'+hotel_id,line_array,line)
     # print('---------')
 
 get_hotel_url('http://happyhotel.jp/searchHotelArea.act?area_id=999000131')
