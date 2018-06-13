@@ -47,24 +47,23 @@ def get_hotel_detail(hotel_id):
             for d in tr.find_all(["dt","dd"]):
                 line_array=d.text.split()
                 #曜日は全部【】で囲われてるから判別できた
-                if len(line_array) == 1:
-                    #正規表現で【】を除外
-                    week_kbn=re.sub(r'[【】]',"",line_array[0])
-                    # print (week_kbn)
+                if "【" in d.text:
+                    week_kbn = re.sub(r'[【】]',"",d.text)
                 else:
                     # print(line_array)  #['10:00〜13:00', 'チェックインより', '6時間ご利用', '¥6000', '〜¥12000']
                     #処理のため一旦配列結合して文字列にする
                     line=''.join(line_array)
-                    #正規表現で全角文字を除外する
-                    #空要素も削除する
+                    #正規表現で全角文字を除外する.空要素も削除する
                     line_array=[i for i in re.split(r'[^\x01-\x7E]',line) if i != '']
-                    # print (line_array)
+
                     try:
+                        if "24時間制" in line:
+                            line_array.insert(1,'0')
                         start_time=line_array[0]
                         end_time=line_array[1]
                         stay_time=line_array[2]
                         min_price=line_array[3]
-                        max_price=line_array[4] if len(line_array) == 5 else line_array[3]
+                        max_price=line_array[4] if len(line_array) >= 5 else min_price
                         print (hotel_id+','+hotel_name+','+use_kbn+','+week_kbn+','+
                             min_price+','+max_price+','+start_time+','+end_time+','+stay_time)
                     # もしデータ抽出で失敗したら，例外キャッチする
